@@ -21,6 +21,19 @@ const Orden = ({orden}) => {
         }
     }
 
+    //completa el estado de una orden
+    const completarOrden = (id) => {
+        try {
+            firebase.db.collection('ordenes')
+                .doc(id)
+                .update({
+                    completado: true
+                })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return ( 
         <div className='sm:w-1/2 lg:w-1/3 px-2 mb-4'>
             <div className='p-3 shadow-md bg-white'>
@@ -60,6 +73,15 @@ const Orden = ({orden}) => {
                         <span className='font-bold'>{orden.tiempoEntrega} Minutos</span>
                     </p>
                     
+                )}
+
+                {!orden.completado && orden.tiempoEntrega > 0 && (
+                    <button
+                    type='button'
+                    className='bg-blue-800 hover:bg-blue-700 w-full mt-5 p-2 text-white uppercase font-bold'
+                    onClick={ () => completarOrden (orden.id)}>
+                        Marcar como lista
+                    </button>
                 )}
             </div>
         </div>
